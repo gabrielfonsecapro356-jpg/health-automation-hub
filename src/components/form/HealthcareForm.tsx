@@ -15,7 +15,7 @@ import { Step10Final } from "./steps/Step10Final";
 import { ChevronLeft, ChevronRight, Send, Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
-const WEBHOOK_URL = "https://seu-n8n.app.n8n.cloud/webhook/healthcare-form";
+const WEBHOOK_URL = "https://n8n.srv1200909.hstgr.cloud/webhook-test/dados-form";
 
 const steps = [
   "Dados Básicos",
