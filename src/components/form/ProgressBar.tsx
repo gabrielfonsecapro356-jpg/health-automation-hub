@@ -28,12 +28,12 @@ export const ProgressBar = ({ currentStep, totalSteps, steps }: ProgressBarProps
         />
       </div>
 
-      <div className="hidden md:flex justify-between mt-4 gap-2">
+      <div className="flex flex-wrap justify-center md:justify-between mt-4 gap-2">
         {steps.map((step, index) => (
           <div
             key={index}
             className={cn(
-              "flex items-center gap-2 text-xs transition-all duration-300",
+              "flex items-center gap-1.5 text-xs transition-all duration-300 shrink-0",
               index <= currentStep
                 ? "text-primary font-medium"
                 : "text-muted-foreground"
@@ -41,7 +41,7 @@ export const ProgressBar = ({ currentStep, totalSteps, steps }: ProgressBarProps
           >
             <div
               className={cn(
-                "w-6 h-6 rounded-full flex items-center justify-center transition-all duration-300 text-xs",
+                "w-6 h-6 rounded-full flex items-center justify-center transition-all duration-300 text-xs shrink-0",
                 index < currentStep
                   ? "gradient-primary text-primary-foreground"
                   : index === currentStep
@@ -55,7 +55,7 @@ export const ProgressBar = ({ currentStep, totalSteps, steps }: ProgressBarProps
                 index + 1
               )}
             </div>
-            <span className="hidden lg:inline max-w-[100px] truncate">{step}</span>
+            <span className="hidden xl:inline max-w-[80px] truncate">{step}</span>
           </div>
         ))}
       </div>
