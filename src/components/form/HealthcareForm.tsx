@@ -5,7 +5,7 @@ import { Step1BasicInfo } from "./steps/Step1BasicInfo";
 import { Send, Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
-const WEBHOOK_URL = "https://n8n.srv1200909.hstgr.cloud/webhook-test/d850d3a7-327a-490b-8950-1762e484d085";
+const WEBHOOK_URL = "https://n8n.srv1720464.hstgr.cloud/webhook-test/49fc65a7-9ae2-4c52-ba56-b3ed7aee29b5";
 
 export const HealthcareForm = () => {
   const [formData, setFormData] = useState<FormData>(initialFormData);
