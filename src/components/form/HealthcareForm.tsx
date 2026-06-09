@@ -1,37 +1,13 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { ProgressBar } from "./ProgressBar";
 import { FormData, initialFormData } from "@/types/form";
 import { Step1BasicInfo } from "./steps/Step1BasicInfo";
-import { Step2Segment } from "./steps/Step2Segment";
-import { Step3Structure } from "./steps/Step3Structure";
-import { Step4Acquisition } from "./steps/Step4Acquisition";
-import { Step5Scheduling } from "./steps/Step5Scheduling";
-import { Step6Financial } from "./steps/Step6Financial";
-import { Step7Systems } from "./steps/Step7Systems";
-import { Step8Pains } from "./steps/Step8Pains";
-import { Step9Objectives } from "./steps/Step9Objectives";
-import { Step10Final } from "./steps/Step10Final";
-import { ChevronLeft, ChevronRight, Send, Loader2 } from "lucide-react";
+import { Send, Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 const WEBHOOK_URL = "https://n8n.srv1200909.hstgr.cloud/webhook-test/d850d3a7-327a-490b-8950-1762e484d085";
 
-const steps = [
-  "Dados Básicos",
-  "Segmento",
-  "Estrutura",
-  "Captação",
-  "Agendamento",
-  "Financeiro",
-  "Sistemas",
-  "Dores",
-  "Objetivos",
-  "Finalização",
-];
-
 export const HealthcareForm = () => {
-  const [currentStep, setCurrentStep] = useState(0);
   const [formData, setFormData] = useState<FormData>(initialFormData);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -39,20 +15,6 @@ export const HealthcareForm = () => {
 
   const handleChange = (field: keyof FormData, value: string | string[]) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
-  };
-
-  const handleNext = () => {
-    if (currentStep < steps.length - 1) {
-      setCurrentStep((prev) => prev + 1);
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
-  };
-
-  const handlePrev = () => {
-    if (currentStep > 0) {
-      setCurrentStep((prev) => prev - 1);
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
   };
 
   const handleSubmit = async () => {
@@ -86,24 +48,6 @@ export const HealthcareForm = () => {
       setIsSubmitted(true);
     } finally {
       setIsSubmitting(false);
-    }
-  };
-
-  const renderStep = () => {
-    const props = { data: formData, onChange: handleChange };
-    
-    switch (currentStep) {
-      case 0: return <Step1BasicInfo {...props} />;
-      case 1: return <Step2Segment {...props} />;
-      case 2: return <Step3Structure {...props} />;
-      case 3: return <Step4Acquisition {...props} />;
-      case 4: return <Step5Scheduling {...props} />;
-      case 5: return <Step6Financial {...props} />;
-      case 6: return <Step7Systems {...props} />;
-      case 7: return <Step8Pains {...props} />;
-      case 8: return <Step9Objectives {...props} />;
-      case 9: return <Step10Final {...props} />;
-      default: return null;
     }
   };
 
@@ -147,52 +91,27 @@ export const HealthcareForm = () => {
         </div>
 
         <div className="bg-card rounded-2xl shadow-card border border-border/50 p-6 md:p-8">
-          <ProgressBar 
-            currentStep={currentStep} 
-            totalSteps={steps.length} 
-            steps={steps} 
-          />
+          <Step1BasicInfo data={formData} onChange={handleChange} />
 
-          <div className="min-h-[400px]">
-            {renderStep()}
-          </div>
-
-          <div className="flex justify-between mt-8 pt-6 border-t border-border/50">
+          <div className="flex justify-end mt-8 pt-6 border-t border-border/50">
             <Button
-              variant="outline"
-              onClick={handlePrev}
-              disabled={currentStep === 0}
+              onClick={handleSubmit}
+              variant="gradient"
+              disabled={isSubmitting}
               className="gap-2"
             >
-              <ChevronLeft className="w-4 h-4" />
-              Anterior
+              {isSubmitting ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  Enviando...
+                </>
+              ) : (
+                <>
+                  <Send className="w-4 h-4" />
+                  Enviar Formulário
+                </>
+              )}
             </Button>
-
-            {currentStep < steps.length - 1 ? (
-              <Button onClick={handleNext} variant="gradient" className="gap-2">
-                Próximo
-                <ChevronRight className="w-4 h-4" />
-              </Button>
-            ) : (
-              <Button
-                onClick={handleSubmit}
-                variant="gradient"
-                disabled={isSubmitting}
-                className="gap-2"
-              >
-                {isSubmitting ? (
-                  <>
-                    <Loader2 className="w-4 h-4 animate-spin" />
-                    Enviando...
-                  </>
-                ) : (
-                  <>
-                    <Send className="w-4 h-4" />
-                    Enviar Formulário
-                  </>
-                )}
-              </Button>
-            )}
           </div>
         </div>
 
