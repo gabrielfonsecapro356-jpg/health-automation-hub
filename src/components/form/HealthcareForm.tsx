@@ -20,6 +20,35 @@ export const HealthcareForm = () => {
   const handleSubmit = async () => {
     setIsSubmitting(true);
 
+    // Campos preenchidos no formulário (página de dados básicos).
+    // Obrigatórios sempre enviados; opcionais somente quando existirem.
+    const requiredFields: (keyof FormData)[] = [
+      "nomeEmpresa",
+      "nomeResponsavel",
+      "email",
+      "telefone",
+      "cidadeEstado",
+    ];
+    const optionalFields: (keyof FormData)[] = [
+      "cnpj",
+      "cargoResponsavel",
+      "site",
+      "redesSociais",
+    ];
+
+    const isFilled = (value: string | string[]) =>
+      Array.isArray(value) ? value.length > 0 : value.trim() !== "";
+
+    const payload: Record<string, string | string[]> = {};
+    requiredFields.forEach((field) => {
+      payload[field] = formData[field];
+    });
+    optionalFields.forEach((field) => {
+      if (isFilled(formData[field])) {
+        payload[field] = formData[field];
+      }
+    });
+
     try {
       await fetch(WEBHOOK_URL, {
         method: "POST",
@@ -28,7 +57,7 @@ export const HealthcareForm = () => {
         },
         mode: "no-cors",
         body: JSON.stringify({
-          ...formData,
+          ...payload,
           submittedAt: new Date().toISOString(),
           source: window.location.origin,
         }),
